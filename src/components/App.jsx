@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
+import styles from './App.module.css';
 
 const App = () => {
   const [query, setQuery] = useState('');
@@ -43,16 +43,16 @@ const App = () => {
           page: currentPage,
         },
       })
-      .then((response) => {
-        setImages((prevImages) => [...prevImages, ...response.data.hits]);
+      .then(response => {
+        setImages(prevImages => [...prevImages, ...response.data.hits]);
         setPage(currentPage + 1);
         setTotalHits(response.data.totalHits);
       })
-      .catch((error) => console.error('Error:', error))
+      .catch(error => console.error('Error:', error))
       .finally(() => setLoading(false));
   };
 
-  const handleSearch = (newQuery) => {
+  const handleSearch = newQuery => {
     setQuery(newQuery);
   };
 
@@ -60,7 +60,7 @@ const App = () => {
     loadImages(query, page);
   };
 
-  const handleImageClick = (largeImageURL) => {
+  const handleImageClick = largeImageURL => {
     setSelectedImage(largeImageURL);
     setIsModalOpen(true);
   };
@@ -71,7 +71,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className={styles.App}>
       <Searchbar onSubmit={handleSearch} />
       <ImageGallery images={images} onImageClick={handleImageClick} />
       {loading && <Loader />}
